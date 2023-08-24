@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Check if Git is installed
+echo "Checking if Git isntalled on your machine ...."
+
+if ! command -v git &> /dev/null; then
+    echo "Git is not installed. Installing Git..."
+    sudo apt update
+    sudo apt install git -y
+else
+    echo "Git is already installed."
+fi
+
+# Check for Git updates
+echo "Checking for Git updates..."
+git_version="$(git --version | awk '{print $3}')"
+latest_version="$(sudo apt-cache show git | grep Version | awk '{print $2}' | head -1)"
+if [[ "$git_version" != "$latest_version" ]]; then
+    echo "An update for Git is available. Updating..."
+    sudo apt update
+    sudo apt upgrade git -y
+else
+    echo "Git is up to date."
+fi
+
+echo "Configuring Git ..."
+
+# Configure Git
+git config --global user.name "Henok-Belachew"
+git config --global user.email "henokbelachewstu@gmail.com"
+clear
+echo "Git has been configured succesfully!"
+
+echo "Your Git username is: $(git config --global user.name)"
+echo "Your Git email is: $(git config --global user.email)"
